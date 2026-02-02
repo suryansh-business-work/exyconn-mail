@@ -1,5 +1,5 @@
 import "@testing-library/react";
-import { vi } from "vitest";
+import { vi, beforeAll, afterAll } from "vitest";
 
 // Mock API calls to prevent network errors in tests
 vi.mock("./services/api", () => ({
