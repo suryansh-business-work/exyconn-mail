@@ -1,4 +1,4 @@
-import api from './api';
+import api from "./api";
 
 export interface Mailbox {
   _id: string;
@@ -43,7 +43,7 @@ export interface MailboxQueryParams {
   domainId?: string;
   isActive?: boolean;
   sortBy?: string;
-  sortOrder?: 'asc' | 'desc';
+  sortOrder?: "asc" | "desc";
 }
 
 export interface PaginatedResponse<T> {
@@ -58,8 +58,10 @@ export interface PaginatedResponse<T> {
 }
 
 export const mailboxService = {
-  async getAll(params: MailboxQueryParams = {}): Promise<PaginatedResponse<Mailbox>> {
-    const response = await api.get('/mailboxes', { params });
+  async getAll(
+    params: MailboxQueryParams = {},
+  ): Promise<PaginatedResponse<Mailbox>> {
+    const response = await api.get("/mailboxes", { params });
     return response.data;
   },
 
@@ -68,12 +70,17 @@ export const mailboxService = {
     return response.data;
   },
 
-  async create(data: MailboxInput): Promise<{ success: boolean; data: Mailbox }> {
-    const response = await api.post('/mailboxes', data);
+  async create(
+    data: MailboxInput,
+  ): Promise<{ success: boolean; data: Mailbox }> {
+    const response = await api.post("/mailboxes", data);
     return response.data;
   },
 
-  async update(id: string, data: MailboxUpdateInput): Promise<{ success: boolean; data: Mailbox }> {
+  async update(
+    id: string,
+    data: MailboxUpdateInput,
+  ): Promise<{ success: boolean; data: Mailbox }> {
     const response = await api.put(`/mailboxes/${id}`, data);
     return response.data;
   },
@@ -85,9 +92,15 @@ export const mailboxService = {
 
   async authenticate(
     email: string,
-    password: string
-  ): Promise<{ success: boolean; data: { email: string; displayName: string } }> {
-    const response = await api.post('/mailboxes/authenticate', { email, password });
+    password: string,
+  ): Promise<{
+    success: boolean;
+    data: { email: string; displayName: string };
+  }> {
+    const response = await api.post("/mailboxes/authenticate", {
+      email,
+      password,
+    });
     return response.data;
   },
 };

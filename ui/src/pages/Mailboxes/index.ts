@@ -1,1 +1,1 @@
-export { default as Mailboxes } from './Mailboxes';
+export { default as Mailboxes } from "./Mailboxes";

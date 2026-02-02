@@ -1,22 +1,22 @@
-import { useState, useEffect } from 'react';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import Button from '@mui/material/Button';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import Skeleton from '@mui/material/Skeleton';
-import Alert from '@mui/material/Alert';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { domainService, DNSRecord } from '../../services/domainService';
+import { useState, useEffect } from "react";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import Skeleton from "@mui/material/Skeleton";
+import Alert from "@mui/material/Alert";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { domainService, DNSRecord } from "../../services/domainService";
 
 interface DNSRecordsDialogProps {
   open: boolean;
@@ -24,20 +24,24 @@ interface DNSRecordsDialogProps {
   onClose: () => void;
 }
 
-export function DNSRecordsDialog({ open, domainId, onClose }: DNSRecordsDialogProps) {
+export function DNSRecordsDialog({
+  open,
+  domainId,
+  onClose,
+}: DNSRecordsDialogProps) {
   const [records, setRecords] = useState<DNSRecord[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [copied, setCopied] = useState<string | null>(null);
 
   useEffect(() => {
     if (open && domainId) {
       setLoading(true);
-      setError('');
+      setError("");
       domainService
         .getDNSRecords(domainId)
         .then((res) => setRecords(res.records))
-        .catch(() => setError('Failed to fetch DNS records'))
+        .catch(() => setError("Failed to fetch DNS records"))
         .finally(() => setLoading(false));
     }
   }, [open, domainId]);
@@ -53,7 +57,8 @@ export function DNSRecordsDialog({ open, domainId, onClose }: DNSRecordsDialogPr
       <DialogTitle>DNS Records Configuration</DialogTitle>
       <DialogContent>
         <Alert severity="info" sx={{ mb: 2 }}>
-          Add these DNS records to your domain registrar to configure email for your domain.
+          Add these DNS records to your domain registrar to configure email for
+          your domain.
         </Alert>
         {error && (
           <Alert severity="error" sx={{ mb: 2 }}>
@@ -90,7 +95,10 @@ export function DNSRecordsDialog({ open, domainId, onClose }: DNSRecordsDialogPr
                         </Typography>
                       </TableCell>
                       <TableCell>
-                        <Typography variant="body2" sx={{ wordBreak: 'break-all' }}>
+                        <Typography
+                          variant="body2"
+                          sx={{ wordBreak: "break-all" }}
+                        >
                           {record.host}
                         </Typography>
                       </TableCell>
@@ -98,24 +106,33 @@ export function DNSRecordsDialog({ open, domainId, onClose }: DNSRecordsDialogPr
                         <Typography
                           variant="body2"
                           sx={{
-                            wordBreak: 'break-all',
+                            wordBreak: "break-all",
                             maxWidth: 400,
-                            fontSize: '0.75rem',
-                            fontFamily: 'monospace',
+                            fontSize: "0.75rem",
+                            fontFamily: "monospace",
                           }}
                         >
                           {record.value.length > 100
                             ? `${record.value.substring(0, 100)}...`
                             : record.value}
                         </Typography>
-                        <Typography variant="caption" color="text.secondary" display="block">
+                        <Typography
+                          variant="caption"
+                          color="text.secondary"
+                          display="block"
+                        >
                           {record.description}
                         </Typography>
                       </TableCell>
-                      <TableCell>{record.priority || '-'}</TableCell>
+                      <TableCell>{record.priority || "-"}</TableCell>
                       <TableCell>
-                        <Tooltip title={copied === `${idx}` ? 'Copied!' : 'Copy value'}>
-                          <IconButton size="small" onClick={() => handleCopy(record.value, `${idx}`)}>
+                        <Tooltip
+                          title={copied === `${idx}` ? "Copied!" : "Copy value"}
+                        >
+                          <IconButton
+                            size="small"
+                            onClick={() => handleCopy(record.value, `${idx}`)}
+                          >
                             <ContentCopyIcon fontSize="small" />
                           </IconButton>
                         </Tooltip>

@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from 'mongoose';
+import mongoose, { Document, Schema } from "mongoose";
 
 export interface IDKIMConfig {
   selector: string;
@@ -28,7 +28,7 @@ const dkimConfigSchema = new Schema<IDKIMConfig>(
     privateKey: { type: String, required: true },
     publicKey: { type: String, required: true },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const domainSchema = new Schema<IDomain>(
@@ -67,11 +67,11 @@ const domainSchema = new Schema<IDomain>(
     },
     spfRecord: {
       type: String,
-      default: '',
+      default: "",
     },
     dmarcRecord: {
       type: String,
-      default: '',
+      default: "",
     },
     isVerified: {
       type: Boolean,
@@ -84,7 +84,7 @@ const domainSchema = new Schema<IDomain>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-export const Domain = mongoose.model<IDomain>('Domain', domainSchema);
+export const Domain = mongoose.model<IDomain>("Domain", domainSchema);

@@ -1,16 +1,16 @@
-import { Mailbox, IMailbox } from './mailboxes.models';
-import { Domain } from '../domains/domains.models';
+import { Mailbox, IMailbox } from "./mailboxes.models";
+import { Domain } from "../domains/domains.models";
 import {
   CreateMailboxInput,
   UpdateMailboxInput,
   QueryMailboxesInput,
-} from './mailboxes.validators';
+} from "./mailboxes.validators";
 
 export const mailboxesService = {
   async create(data: CreateMailboxInput): Promise<IMailbox> {
     const domain = await Domain.findById(data.domainId);
     if (!domain) {
-      throw new Error('Domain not found');
+      throw new Error("Domain not found");
     }
 
     const email = `${data.username.toLowerCase()}@${domain.name}`;
@@ -29,31 +29,32 @@ export const mailboxesService = {
   },
 
   async getAll(query: QueryMailboxesInput) {
-    const { page, limit, search, domainId, isActive, sortBy, sortOrder } = query;
+    const { page, limit, search, domainId, isActive, sortBy, sortOrder } =
+      query;
     const skip = (page - 1) * limit;
 
     const filter: Record<string, unknown> = {};
     if (search) {
       filter.$or = [
-        { email: { $regex: search, $options: 'i' } },
-        { displayName: { $regex: search, $options: 'i' } },
+        { email: { $regex: search, $options: "i" } },
+        { displayName: { $regex: search, $options: "i" } },
       ];
     }
     if (domainId) {
       filter.domainId = domainId;
     }
-    if (typeof isActive === 'boolean') {
+    if (typeof isActive === "boolean") {
       filter.isActive = isActive;
     }
 
     const sortOptions: Record<string, 1 | -1> = {
-      [sortBy]: sortOrder === 'asc' ? 1 : -1,
+      [sortBy]: sortOrder === "asc" ? 1 : -1,
     };
 
     const [mailboxes, total] = await Promise.all([
       Mailbox.find(filter)
-        .select('-passwordHash')
-        .populate('domainId', 'name')
+        .select("-passwordHash")
+        .populate("domainId", "name")
         .sort(sortOptions)
         .skip(skip)
         .limit(limit),
@@ -72,11 +73,13 @@ export const mailboxesService = {
   },
 
   async getById(id: string): Promise<IMailbox | null> {
-    return Mailbox.findById(id).select('-passwordHash').populate('domainId', 'name');
+    return Mailbox.findById(id)
+      .select("-passwordHash")
+      .populate("domainId", "name");
   },
 
   async getByEmail(email: string): Promise<IMailbox | null> {
-    return Mailbox.findOne({ email: email.toLowerCase() }).populate('domainId');
+    return Mailbox.findOne({ email: email.toLowerCase() }).populate("domainId");
   },
 
   async update(id: string, data: UpdateMailboxInput): Promise<IMailbox | null> {
@@ -92,15 +95,23 @@ export const mailboxesService = {
     Object.assign(mailbox, updateData);
     await mailbox.save();
 
-    return Mailbox.findById(id).select('-passwordHash').populate('domainId', 'name');
+    return Mailbox.findById(id)
+      .select("-passwordHash")
+      .populate("domainId", "name");
   },
 
   async delete(id: string): Promise<IMailbox | null> {
     return Mailbox.findByIdAndDelete(id);
   },
 
-  async authenticate(email: string, password: string): Promise<IMailbox | null> {
-    const mailbox = await Mailbox.findOne({ email: email.toLowerCase(), isActive: true });
+  async authenticate(
+    email: string,
+    password: string,
+  ): Promise<IMailbox | null> {
+    const mailbox = await Mailbox.findOne({
+      email: email.toLowerCase(),
+      isActive: true,
+    });
     if (!mailbox) return null;
 
     const isValid = mailbox.validatePassword(password);
@@ -115,11 +126,11 @@ export const mailboxesService = {
   async updateQuotaUsage(email: string, bytesUsed: number): Promise<void> {
     await Mailbox.findOneAndUpdate(
       { email: email.toLowerCase() },
-      { $inc: { usedQuota: bytesUsed } }
+      { $inc: { usedQuota: bytesUsed } },
     );
   },
 
   async getByDomain(domainId: string): Promise<IMailbox[]> {
-    return Mailbox.find({ domainId }).select('-passwordHash');
+    return Mailbox.find({ domainId }).select("-passwordHash");
   },
 };

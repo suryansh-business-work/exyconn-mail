@@ -1,22 +1,22 @@
-import { FC } from 'react';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableHead from '@mui/material/TableHead';
-import TableBody from '@mui/material/TableBody';
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
-import TablePagination from '@mui/material/TablePagination';
-import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import Chip from '@mui/material/Chip';
-import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
-import LinearProgress from '@mui/material/LinearProgress';
-import Typography from '@mui/material/Typography';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { Mailbox } from '../../services/mailboxService';
+import { FC } from "react";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableHead from "@mui/material/TableHead";
+import TableBody from "@mui/material/TableBody";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import TablePagination from "@mui/material/TablePagination";
+import TextField from "@mui/material/TextField";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import Chip from "@mui/material/Chip";
+import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
+import LinearProgress from "@mui/material/LinearProgress";
+import Typography from "@mui/material/Typography";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { Mailbox } from "../../services/mailboxService";
 
 interface MailboxTableProps {
   mailboxes: Mailbox[];
@@ -88,36 +88,46 @@ export const MailboxTable: FC<MailboxTableProps> = ({
             </TableRow>
           ) : (
             mailboxes.map((mailbox) => {
-              const usagePercent = getQuotaUsagePercent(mailbox.quotaUsed, mailbox.quotaLimit);
+              const usagePercent = getQuotaUsagePercent(
+                mailbox.quotaUsed,
+                mailbox.quotaLimit,
+              );
               return (
                 <TableRow key={mailbox._id}>
                   <TableCell>{mailbox.email}</TableCell>
                   <TableCell>{mailbox.name}</TableCell>
                   <TableCell>
                     <Chip
-                      label={mailbox.isActive ? 'Active' : 'Inactive'}
-                      color={mailbox.isActive ? 'success' : 'default'}
+                      label={mailbox.isActive ? "Active" : "Inactive"}
+                      color={mailbox.isActive ? "success" : "default"}
                       size="small"
                     />
                   </TableCell>
                   <TableCell sx={{ minWidth: 200 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                       <Box sx={{ flex: 1 }}>
                         <LinearProgress
                           variant="determinate"
                           value={usagePercent}
-                          color={usagePercent > 90 ? 'error' : usagePercent > 70 ? 'warning' : 'primary'}
+                          color={
+                            usagePercent > 90
+                              ? "error"
+                              : usagePercent > 70
+                                ? "warning"
+                                : "primary"
+                          }
                         />
                       </Box>
                       <Typography variant="caption" sx={{ minWidth: 100 }}>
-                        {formatQuota(mailbox.quotaUsed)} / {formatQuota(mailbox.quotaLimit)}
+                        {formatQuota(mailbox.quotaUsed)} /{" "}
+                        {formatQuota(mailbox.quotaLimit)}
                       </Typography>
                     </Box>
                   </TableCell>
                   <TableCell>
                     <Chip
-                      label={mailbox.autoReply ? 'Enabled' : 'Disabled'}
-                      color={mailbox.autoReply ? 'info' : 'default'}
+                      label={mailbox.autoReply ? "Enabled" : "Disabled"}
+                      color={mailbox.autoReply ? "info" : "default"}
                       size="small"
                     />
                   </TableCell>
@@ -128,7 +138,11 @@ export const MailboxTable: FC<MailboxTableProps> = ({
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Delete">
-                      <IconButton size="small" color="error" onClick={() => onDelete(mailbox._id)}>
+                      <IconButton
+                        size="small"
+                        color="error"
+                        onClick={() => onDelete(mailbox._id)}
+                      >
                         <DeleteIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
@@ -145,7 +159,9 @@ export const MailboxTable: FC<MailboxTableProps> = ({
         page={page}
         rowsPerPage={rowsPerPage}
         onPageChange={(_, p) => onPageChange(p)}
-        onRowsPerPageChange={(e) => onRowsPerPageChange(parseInt(e.target.value, 10))}
+        onRowsPerPageChange={(e) =>
+          onRowsPerPageChange(parseInt(e.target.value, 10))
+        }
         rowsPerPageOptions={[5, 10, 25, 50]}
       />
     </Paper>

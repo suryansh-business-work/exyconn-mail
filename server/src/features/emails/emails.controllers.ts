@@ -1,20 +1,20 @@
-import { Request, Response } from 'express';
-import { emailsService } from './emails.services';
+import { Request, Response } from "express";
+import { emailsService } from "./emails.services";
 import {
   sendEmailSchema,
   emailIdSchema,
   emailQuerySchema,
   updateEmailSchema,
   replyEmailSchema,
-} from './emails.validators';
-import { ZodError } from 'zod';
+} from "./emails.validators";
+import { ZodError } from "zod";
 
 const handleZodError = (error: ZodError, res: Response): void => {
   res.status(400).json({
     success: false,
-    message: 'Validation error',
+    message: "Validation error",
     errors: error.errors.map((e) => ({
-      field: e.path.join('.'),
+      field: e.path.join("."),
       message: e.message,
     })),
   });
@@ -27,7 +27,7 @@ export const emailsController = {
       const email = await emailsService.sendEmail(validatedData);
       res.status(201).json({
         success: true,
-        message: 'Email sent successfully',
+        message: "Email sent successfully",
         data: email,
       });
     } catch (error) {
@@ -37,8 +37,8 @@ export const emailsController = {
       }
       res.status(500).json({
         success: false,
-        message: 'Failed to send email',
-        error: error instanceof Error ? error.message : 'Unknown error',
+        message: "Failed to send email",
+        error: error instanceof Error ? error.message : "Unknown error",
       });
     }
   },
@@ -58,8 +58,8 @@ export const emailsController = {
       }
       res.status(500).json({
         success: false,
-        message: 'Failed to fetch emails',
-        error: error instanceof Error ? error.message : 'Unknown error',
+        message: "Failed to fetch emails",
+        error: error instanceof Error ? error.message : "Unknown error",
       });
     }
   },
@@ -71,7 +71,7 @@ export const emailsController = {
       if (!email) {
         res.status(404).json({
           success: false,
-          message: 'Email not found',
+          message: "Email not found",
         });
         return;
       }
@@ -87,8 +87,8 @@ export const emailsController = {
       }
       res.status(500).json({
         success: false,
-        message: 'Failed to fetch email',
-        error: error instanceof Error ? error.message : 'Unknown error',
+        message: "Failed to fetch email",
+        error: error instanceof Error ? error.message : "Unknown error",
       });
     }
   },
@@ -101,13 +101,13 @@ export const emailsController = {
       if (!email) {
         res.status(404).json({
           success: false,
-          message: 'Email not found',
+          message: "Email not found",
         });
         return;
       }
       res.json({
         success: true,
-        message: 'Email updated successfully',
+        message: "Email updated successfully",
         data: email,
       });
     } catch (error) {
@@ -117,8 +117,8 @@ export const emailsController = {
       }
       res.status(500).json({
         success: false,
-        message: 'Failed to update email',
-        error: error instanceof Error ? error.message : 'Unknown error',
+        message: "Failed to update email",
+        error: error instanceof Error ? error.message : "Unknown error",
       });
     }
   },
@@ -130,13 +130,13 @@ export const emailsController = {
       if (!email) {
         res.status(404).json({
           success: false,
-          message: 'Email not found',
+          message: "Email not found",
         });
         return;
       }
       res.json({
         success: true,
-        message: 'Email deleted successfully',
+        message: "Email deleted successfully",
       });
     } catch (error) {
       if (error instanceof ZodError) {
@@ -145,8 +145,8 @@ export const emailsController = {
       }
       res.status(500).json({
         success: false,
-        message: 'Failed to delete email',
-        error: error instanceof Error ? error.message : 'Unknown error',
+        message: "Failed to delete email",
+        error: error instanceof Error ? error.message : "Unknown error",
       });
     }
   },
@@ -158,13 +158,13 @@ export const emailsController = {
       if (!email) {
         res.status(404).json({
           success: false,
-          message: 'Email not found',
+          message: "Email not found",
         });
         return;
       }
       res.json({
         success: true,
-        message: 'Email moved to trash',
+        message: "Email moved to trash",
         data: email,
       });
     } catch (error) {
@@ -174,8 +174,8 @@ export const emailsController = {
       }
       res.status(500).json({
         success: false,
-        message: 'Failed to move email to trash',
-        error: error instanceof Error ? error.message : 'Unknown error',
+        message: "Failed to move email to trash",
+        error: error instanceof Error ? error.message : "Unknown error",
       });
     }
   },
@@ -187,13 +187,13 @@ export const emailsController = {
       if (!email) {
         res.status(404).json({
           success: false,
-          message: 'Email not found',
+          message: "Email not found",
         });
         return;
       }
       res.json({
         success: true,
-        message: email.isStarred ? 'Email starred' : 'Email unstarred',
+        message: email.isStarred ? "Email starred" : "Email unstarred",
         data: email,
       });
     } catch (error) {
@@ -203,8 +203,8 @@ export const emailsController = {
       }
       res.status(500).json({
         success: false,
-        message: 'Failed to toggle star',
-        error: error instanceof Error ? error.message : 'Unknown error',
+        message: "Failed to toggle star",
+        error: error instanceof Error ? error.message : "Unknown error",
       });
     }
   },
@@ -218,12 +218,12 @@ export const emailsController = {
       if (!originalEmail) {
         res.status(404).json({
           success: false,
-          message: 'Original email not found',
+          message: "Original email not found",
         });
         return;
       }
 
-      const replySubject = originalEmail.subject.startsWith('Re:')
+      const replySubject = originalEmail.subject.startsWith("Re:")
         ? originalEmail.subject
         : `Re: ${originalEmail.subject}`;
 
@@ -231,7 +231,7 @@ export const emailsController = {
 
       const sendInput = {
         mailboxId,
-        from: originalEmail.to[0] || 'noreply@exyconn.com',
+        from: originalEmail.to[0] || "noreply@exyconn.com",
         to: [originalEmail.from],
         cc: [] as string[],
         bcc: [] as string[],
@@ -244,7 +244,7 @@ export const emailsController = {
 
       res.status(201).json({
         success: true,
-        message: 'Reply sent successfully',
+        message: "Reply sent successfully",
         data: email,
       });
     } catch (error) {
@@ -254,8 +254,8 @@ export const emailsController = {
       }
       res.status(500).json({
         success: false,
-        message: 'Failed to send reply',
-        error: error instanceof Error ? error.message : 'Unknown error',
+        message: "Failed to send reply",
+        error: error instanceof Error ? error.message : "Unknown error",
       });
     }
   },

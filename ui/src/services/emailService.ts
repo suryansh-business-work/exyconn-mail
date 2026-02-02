@@ -1,4 +1,4 @@
-import api from './api';
+import api from "./api";
 
 export interface Email {
   _id: string;
@@ -25,7 +25,7 @@ export interface Email {
   }[];
   isRead: boolean;
   isStarred: boolean;
-  folder: 'inbox' | 'sent' | 'drafts' | 'trash' | 'spam';
+  folder: "inbox" | "sent" | "drafts" | "trash" | "spam";
   size: number;
   receivedAt: string;
   createdAt: string;
@@ -53,7 +53,7 @@ export interface EmailQueryParams {
   isRead?: boolean;
   isStarred?: boolean;
   sortBy?: string;
-  sortOrder?: 'asc' | 'desc';
+  sortOrder?: "asc" | "desc";
 }
 
 export interface PaginatedEmailResponse {
@@ -69,7 +69,7 @@ export interface PaginatedEmailResponse {
 
 export const emailService = {
   async getAll(params: EmailQueryParams = {}): Promise<PaginatedEmailResponse> {
-    const response = await api.get('/emails', { params });
+    const response = await api.get("/emails", { params });
     return response.data;
   },
 
@@ -79,13 +79,13 @@ export const emailService = {
   },
 
   async send(data: SendEmailInput): Promise<{ success: boolean; data: Email }> {
-    const response = await api.post('/emails/send', data);
+    const response = await api.post("/emails/send", data);
     return response.data;
   },
 
   async update(
     id: string,
-    data: { isRead?: boolean; isStarred?: boolean; folder?: string }
+    data: { isRead?: boolean; isStarred?: boolean; folder?: string },
   ): Promise<{ success: boolean; data: Email }> {
     const response = await api.put(`/emails/${id}`, data);
     return response.data;
@@ -108,7 +108,7 @@ export const emailService = {
 
   async reply(
     id: string,
-    data: { textBody: string; htmlBody?: string }
+    data: { textBody: string; htmlBody?: string },
   ): Promise<{ success: boolean; data: Email }> {
     const response = await api.post(`/emails/${id}/reply`, data);
     return response.data;

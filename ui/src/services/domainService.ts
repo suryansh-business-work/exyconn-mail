@@ -1,4 +1,4 @@
-import api from './api';
+import api from "./api";
 
 export interface DKIMConfig {
   selector: string;
@@ -50,7 +50,7 @@ export interface DomainQueryParams {
   isActive?: boolean;
   isVerified?: boolean;
   sortBy?: string;
-  sortOrder?: 'asc' | 'desc';
+  sortOrder?: "asc" | "desc";
 }
 
 export interface PaginatedResponse<T> {
@@ -65,8 +65,10 @@ export interface PaginatedResponse<T> {
 }
 
 export const domainService = {
-  async getAll(params: DomainQueryParams = {}): Promise<PaginatedResponse<Domain>> {
-    const response = await api.get('/domains', { params });
+  async getAll(
+    params: DomainQueryParams = {},
+  ): Promise<PaginatedResponse<Domain>> {
+    const response = await api.get("/domains", { params });
     return response.data;
   },
 
@@ -76,11 +78,14 @@ export const domainService = {
   },
 
   async create(data: DomainInput): Promise<{ success: boolean; data: Domain }> {
-    const response = await api.post('/domains', data);
+    const response = await api.post("/domains", data);
     return response.data;
   },
 
-  async update(id: string, data: Partial<DomainInput>): Promise<{ success: boolean; data: Domain }> {
+  async update(
+    id: string,
+    data: Partial<DomainInput>,
+  ): Promise<{ success: boolean; data: Domain }> {
     const response = await api.put(`/domains/${id}`, data);
     return response.data;
   },
@@ -92,19 +97,23 @@ export const domainService = {
 
   async generateDKIM(
     id: string,
-    selector: string = 'mail'
+    selector: string = "mail",
   ): Promise<{ success: boolean; data: Domain }> {
-    const response = await api.post(`/domains/${id}/generate-dkim`, { selector });
+    const response = await api.post(`/domains/${id}/generate-dkim`, {
+      selector,
+    });
     return response.data;
   },
 
-  async verify(id: string): Promise<{ success: boolean; verified: boolean; errors: string[] }> {
+  async verify(
+    id: string,
+  ): Promise<{ success: boolean; verified: boolean; errors: string[] }> {
     const response = await api.post(`/domains/${id}/verify`);
     return response.data;
   },
 
   async getDNSRecords(
-    id: string
+    id: string,
   ): Promise<{ success: boolean; domain: Domain; records: DNSRecord[] }> {
     const response = await api.get(`/domains/${id}/dns-records`);
     return response.data;

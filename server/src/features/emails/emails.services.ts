@@ -1,9 +1,13 @@
-import nodemailer from 'nodemailer';
-import { v4 as uuidv4 } from 'uuid';
-import { Email, IEmail } from './emails.models';
-import { Mailbox } from '../mailboxes/mailboxes.models';
-import { SendEmailInput, EmailQueryInput, UpdateEmailInput } from './emails.validators';
-import { mailboxesService } from '../mailboxes/mailboxes.services';
+import nodemailer from "nodemailer";
+import { v4 as uuidv4 } from "uuid";
+import { Email, IEmail } from "./emails.models";
+import { Mailbox } from "../mailboxes/mailboxes.models";
+import {
+  SendEmailInput,
+  EmailQueryInput,
+  UpdateEmailInput,
+} from "./emails.validators";
+import { mailboxesService } from "../mailboxes/mailboxes.services";
 
 interface PaginatedResponse<T> {
   data: T[];
@@ -18,14 +22,17 @@ interface PaginatedResponse<T> {
 export const emailsService = {
   async sendEmail(input: SendEmailInput): Promise<IEmail> {
     // Find the sender's mailbox
-    const senderMailbox = await Mailbox.findOne({ email: input.from.toLowerCase() }).populate(
-      'domainId'
-    );
+    const senderMailbox = await Mailbox.findOne({
+      email: input.from.toLowerCase(),
+    }).populate("domainId");
     if (!senderMailbox) {
-      throw new Error('Sender mailbox not found');
+      throw new Error("Sender mailbox not found");
     }
 
-    const domain = senderMailbox.domainId as unknown as { name: string; mxHost: string };
+    const domain = senderMailbox.domainId as unknown as {
+      name: string;
+      mxHost: string;
+    };
 
     const transporter = nodemailer.createTransport({
       host: domain.mxHost,
@@ -38,11 +45,11 @@ export const emailsService = {
 
     const mailOptions = {
       from: input.from,
-      to: input.to.join(', '),
-      cc: input.cc?.join(', '),
-      bcc: input.bcc?.join(', '),
+      to: input.to.join(", "),
+      cc: input.cc?.join(", "),
+      bcc: input.bcc?.join(", "),
       replyTo: input.replyTo || input.from,
-      subject: input.subject || '(No Subject)',
+      subject: input.subject || "(No Subject)",
       text: input.textBody,
       html: input.htmlBody || input.textBody,
       messageId,
@@ -50,7 +57,7 @@ export const emailsService = {
 
     await transporter.sendMail(mailOptions);
 
-    const emailSize = Buffer.byteLength(JSON.stringify(mailOptions), 'utf8');
+    const emailSize = Buffer.byteLength(JSON.stringify(mailOptions), "utf8");
 
     const email = new Email({
       mailboxId: senderMailbox._id,
@@ -60,10 +67,10 @@ export const emailsService = {
       cc: input.cc || [],
       bcc: input.bcc || [],
       replyTo: input.replyTo || input.from,
-      subject: input.subject || '(No Subject)',
-      textBody: input.textBody || '',
-      htmlBody: input.htmlBody || '',
-      folder: 'sent',
+      subject: input.subject || "(No Subject)",
+      textBody: input.textBody || "",
+      htmlBody: input.htmlBody || "",
+      folder: "sent",
       size: emailSize,
       receivedAt: new Date(),
     });
@@ -75,28 +82,42 @@ export const emailsService = {
   },
 
   async getAll(query: EmailQueryInput): Promise<PaginatedResponse<IEmail>> {
-    const { page, limit, search, folder, mailboxId, isRead, isStarred, sortBy, sortOrder } = query;
+    const {
+      page,
+      limit,
+      search,
+      folder,
+      mailboxId,
+      isRead,
+      isStarred,
+      sortBy,
+      sortOrder,
+    } = query;
     const skip = (page - 1) * limit;
 
     const filter: Record<string, unknown> = {};
     if (folder) filter.folder = folder;
     if (mailboxId) filter.mailboxId = mailboxId;
-    if (typeof isRead === 'boolean') filter.isRead = isRead;
-    if (typeof isStarred === 'boolean') filter.isStarred = isStarred;
+    if (typeof isRead === "boolean") filter.isRead = isRead;
+    if (typeof isStarred === "boolean") filter.isStarred = isStarred;
     if (search) {
       filter.$or = [
-        { from: { $regex: search, $options: 'i' } },
-        { subject: { $regex: search, $options: 'i' } },
-        { textBody: { $regex: search, $options: 'i' } },
+        { from: { $regex: search, $options: "i" } },
+        { subject: { $regex: search, $options: "i" } },
+        { textBody: { $regex: search, $options: "i" } },
       ];
     }
 
     const sort: Record<string, 1 | -1> = {
-      [sortBy]: sortOrder === 'asc' ? 1 : -1,
+      [sortBy]: sortOrder === "asc" ? 1 : -1,
     };
 
     const [data, total] = await Promise.all([
-      Email.find(filter).populate('mailboxId', 'email displayName').sort(sort).skip(skip).limit(limit),
+      Email.find(filter)
+        .populate("mailboxId", "email displayName")
+        .sort(sort)
+        .skip(skip)
+        .limit(limit),
       Email.countDocuments(filter),
     ]);
 
@@ -112,7 +133,7 @@ export const emailsService = {
   },
 
   async getById(id: string): Promise<IEmail | null> {
-    return await Email.findById(id).populate('mailboxId', 'email displayName');
+    return await Email.findById(id).populate("mailboxId", "email displayName");
   },
 
   async update(id: string, input: UpdateEmailInput): Promise<IEmail | null> {
@@ -124,7 +145,11 @@ export const emailsService = {
   },
 
   async moveToTrash(id: string): Promise<IEmail | null> {
-    return await Email.findByIdAndUpdate(id, { folder: 'trash' }, { new: true });
+    return await Email.findByIdAndUpdate(
+      id,
+      { folder: "trash" },
+      { new: true },
+    );
   },
 
   async markAsRead(id: string): Promise<IEmail | null> {
@@ -134,7 +159,11 @@ export const emailsService = {
   async toggleStar(id: string): Promise<IEmail | null> {
     const email = await Email.findById(id);
     if (!email) return null;
-    return await Email.findByIdAndUpdate(id, { isStarred: !email.isStarred }, { new: true });
+    return await Email.findByIdAndUpdate(
+      id,
+      { isStarred: !email.isStarred },
+      { new: true },
+    );
   },
 
   async saveIncomingEmail(emailData: {
@@ -149,13 +178,15 @@ export const emailsService = {
     htmlBody?: string;
     receivedAt?: Date;
   }): Promise<IEmail | null> {
-    const mailbox = await Mailbox.findOne({ email: emailData.recipientEmail.toLowerCase() });
+    const mailbox = await Mailbox.findOne({
+      email: emailData.recipientEmail.toLowerCase(),
+    });
     if (!mailbox) {
       console.log(`Mailbox not found for ${emailData.recipientEmail}`);
       return null;
     }
 
-    const emailSize = Buffer.byteLength(JSON.stringify(emailData), 'utf8');
+    const emailSize = Buffer.byteLength(JSON.stringify(emailData), "utf8");
 
     const email = new Email({
       mailboxId: mailbox._id,
@@ -164,16 +195,19 @@ export const emailsService = {
       to: emailData.to,
       cc: emailData.cc || [],
       replyTo: emailData.replyTo || emailData.from,
-      subject: emailData.subject || '(No Subject)',
-      textBody: emailData.textBody || '',
-      htmlBody: emailData.htmlBody || '',
-      folder: 'inbox',
+      subject: emailData.subject || "(No Subject)",
+      textBody: emailData.textBody || "",
+      htmlBody: emailData.htmlBody || "",
+      folder: "inbox",
       size: emailSize,
       receivedAt: emailData.receivedAt || new Date(),
     });
 
     await email.save();
-    await mailboxesService.updateQuotaUsage(emailData.recipientEmail, emailSize);
+    await mailboxesService.updateQuotaUsage(
+      emailData.recipientEmail,
+      emailSize,
+    );
 
     return email;
   },

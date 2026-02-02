@@ -1,11 +1,11 @@
-import { Request, Response } from 'express';
-import { domainsService } from './domains.services';
+import { Request, Response } from "express";
+import { domainsService } from "./domains.services";
 import {
   createDomainSchema,
   updateDomainSchema,
   queryDomainsSchema,
   generateDKIMSchema,
-} from './domains.validators';
+} from "./domains.validators";
 
 export const domainsController = {
   async create(req: Request, res: Response) {
@@ -14,11 +14,13 @@ export const domainsController = {
       const domain = await domainsService.create(data);
       res.status(201).json({ success: true, data: domain });
     } catch (error) {
-      if (error instanceof Error && error.name === 'ZodError') {
+      if (error instanceof Error && error.name === "ZodError") {
         res.status(400).json({ success: false, error: error.message });
         return;
       }
-      res.status(500).json({ success: false, error: 'Failed to create domain' });
+      res
+        .status(500)
+        .json({ success: false, error: "Failed to create domain" });
     }
   },
 
@@ -28,11 +30,13 @@ export const domainsController = {
       const result = await domainsService.getAll(query);
       res.json({ success: true, ...result });
     } catch (error) {
-      if (error instanceof Error && error.name === 'ZodError') {
+      if (error instanceof Error && error.name === "ZodError") {
         res.status(400).json({ success: false, error: error.message });
         return;
       }
-      res.status(500).json({ success: false, error: 'Failed to fetch domains' });
+      res
+        .status(500)
+        .json({ success: false, error: "Failed to fetch domains" });
     }
   },
 
@@ -41,12 +45,12 @@ export const domainsController = {
       const id = req.params.id as string;
       const domain = await domainsService.getById(id);
       if (!domain) {
-        res.status(404).json({ success: false, error: 'Domain not found' });
+        res.status(404).json({ success: false, error: "Domain not found" });
         return;
       }
       res.json({ success: true, data: domain });
     } catch {
-      res.status(500).json({ success: false, error: 'Failed to fetch domain' });
+      res.status(500).json({ success: false, error: "Failed to fetch domain" });
     }
   },
 
@@ -56,16 +60,18 @@ export const domainsController = {
       const data = updateDomainSchema.parse(req.body);
       const domain = await domainsService.update(id, data);
       if (!domain) {
-        res.status(404).json({ success: false, error: 'Domain not found' });
+        res.status(404).json({ success: false, error: "Domain not found" });
         return;
       }
       res.json({ success: true, data: domain });
     } catch (error) {
-      if (error instanceof Error && error.name === 'ZodError') {
+      if (error instanceof Error && error.name === "ZodError") {
         res.status(400).json({ success: false, error: error.message });
         return;
       }
-      res.status(500).json({ success: false, error: 'Failed to update domain' });
+      res
+        .status(500)
+        .json({ success: false, error: "Failed to update domain" });
     }
   },
 
@@ -74,12 +80,14 @@ export const domainsController = {
       const id = req.params.id as string;
       const domain = await domainsService.delete(id);
       if (!domain) {
-        res.status(404).json({ success: false, error: 'Domain not found' });
+        res.status(404).json({ success: false, error: "Domain not found" });
         return;
       }
-      res.json({ success: true, message: 'Domain deleted successfully' });
+      res.json({ success: true, message: "Domain deleted successfully" });
     } catch {
-      res.status(500).json({ success: false, error: 'Failed to delete domain' });
+      res
+        .status(500)
+        .json({ success: false, error: "Failed to delete domain" });
     }
   },
 
@@ -89,16 +97,18 @@ export const domainsController = {
       const { selector } = generateDKIMSchema.parse(req.body);
       const domain = await domainsService.generateDKIM(id, selector);
       if (!domain) {
-        res.status(404).json({ success: false, error: 'Domain not found' });
+        res.status(404).json({ success: false, error: "Domain not found" });
         return;
       }
       res.json({ success: true, data: domain });
     } catch (error) {
-      if (error instanceof Error && error.name === 'ZodError') {
+      if (error instanceof Error && error.name === "ZodError") {
         res.status(400).json({ success: false, error: error.message });
         return;
       }
-      res.status(500).json({ success: false, error: 'Failed to generate DKIM' });
+      res
+        .status(500)
+        .json({ success: false, error: "Failed to generate DKIM" });
     }
   },
 
@@ -108,7 +118,9 @@ export const domainsController = {
       const result = await domainsService.verifyDomain(id);
       res.json({ success: true, ...result });
     } catch {
-      res.status(500).json({ success: false, error: 'Failed to verify domain' });
+      res
+        .status(500)
+        .json({ success: false, error: "Failed to verify domain" });
     }
   },
 
@@ -117,12 +129,14 @@ export const domainsController = {
       const id = req.params.id as string;
       const result = await domainsService.getDNSRecords(id);
       if (!result) {
-        res.status(404).json({ success: false, error: 'Domain not found' });
+        res.status(404).json({ success: false, error: "Domain not found" });
         return;
       }
       res.json({ success: true, ...result });
     } catch {
-      res.status(500).json({ success: false, error: 'Failed to get DNS records' });
+      res
+        .status(500)
+        .json({ success: false, error: "Failed to get DNS records" });
     }
   },
 };

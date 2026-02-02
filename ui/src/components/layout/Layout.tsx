@@ -1,26 +1,26 @@
-import { ReactNode, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Divider from '@mui/material/Divider';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
-import MenuIcon from '@mui/icons-material/Menu';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import InboxIcon from '@mui/icons-material/Inbox';
-import SendIcon from '@mui/icons-material/Send';
-import DnsIcon from '@mui/icons-material/Dns';
-import MailboxIcon from '@mui/icons-material/MarkunreadMailbox';
-import SettingsIcon from '@mui/icons-material/Settings';
+import { ReactNode, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Divider from "@mui/material/Divider";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import MenuIcon from "@mui/icons-material/Menu";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import InboxIcon from "@mui/icons-material/Inbox";
+import SendIcon from "@mui/icons-material/Send";
+import DnsIcon from "@mui/icons-material/Dns";
+import MailboxIcon from "@mui/icons-material/MarkunreadMailbox";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 const DRAWER_WIDTH = 240;
 
@@ -35,17 +35,17 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { label: 'Dashboard', path: '/', icon: <DashboardIcon /> },
-  { label: 'Inbox', path: '/inbox', icon: <InboxIcon /> },
-  { label: 'Compose', path: '/compose', icon: <SendIcon /> },
-  { label: 'Domains', path: '/domains', icon: <DnsIcon /> },
-  { label: 'Mailboxes', path: '/mailboxes', icon: <MailboxIcon /> },
-  { label: 'Settings', path: '/settings', icon: <SettingsIcon /> },
+  { label: "Dashboard", path: "/", icon: <DashboardIcon /> },
+  { label: "Inbox", path: "/inbox", icon: <InboxIcon /> },
+  { label: "Compose", path: "/compose", icon: <SendIcon /> },
+  { label: "Domains", path: "/domains", icon: <DnsIcon /> },
+  { label: "Mailboxes", path: "/mailboxes", icon: <MailboxIcon /> },
+  { label: "Settings", path: "/settings", icon: <SettingsIcon /> },
 ];
 
 export const Layout = ({ children }: LayoutProps) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -64,7 +64,12 @@ export const Layout = ({ children }: LayoutProps) => {
   const drawerContent = (
     <Box>
       <Toolbar>
-        <Typography variant="h6" noWrap component="div" sx={{ fontWeight: 'bold' }}>
+        <Typography
+          variant="h6"
+          noWrap
+          component="div"
+          sx={{ fontWeight: "bold" }}
+        >
           Exyconn Mail
         </Typography>
       </Toolbar>
@@ -86,7 +91,7 @@ export const Layout = ({ children }: LayoutProps) => {
   );
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+    <Box sx={{ display: "flex", minHeight: "100vh" }}>
       <AppBar
         position="fixed"
         sx={{
@@ -100,12 +105,13 @@ export const Layout = ({ children }: LayoutProps) => {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { md: 'none' } }}
+            sx={{ mr: 2, display: { md: "none" } }}
           >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            {navItems.find((item) => item.path === location.pathname)?.label || 'Exyconn Mail'}
+            {navItems.find((item) => item.path === location.pathname)?.label ||
+              "Exyconn Mail"}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -119,8 +125,11 @@ export const Layout = ({ children }: LayoutProps) => {
           onClose={handleDrawerToggle}
           ModalProps={{ keepMounted: true }}
           sx={{
-            display: { xs: 'block', md: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: DRAWER_WIDTH },
+            display: { xs: "block", md: "none" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: DRAWER_WIDTH,
+            },
           }}
         >
           {drawerContent}
@@ -128,8 +137,11 @@ export const Layout = ({ children }: LayoutProps) => {
         <Drawer
           variant="permanent"
           sx={{
-            display: { xs: 'none', md: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: DRAWER_WIDTH },
+            display: { xs: "none", md: "block" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: DRAWER_WIDTH,
+            },
           }}
           open
         >
@@ -142,9 +154,9 @@ export const Layout = ({ children }: LayoutProps) => {
           flexGrow: 1,
           p: 3,
           width: { md: `calc(100% - ${DRAWER_WIDTH}px)` },
-          mt: '64px',
-          backgroundColor: '#f5f5f5',
-          minHeight: 'calc(100vh - 64px)',
+          mt: "64px",
+          backgroundColor: "#f5f5f5",
+          minHeight: "calc(100vh - 64px)",
         }}
       >
         {children}

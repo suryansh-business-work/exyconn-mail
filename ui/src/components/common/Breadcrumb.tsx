@@ -1,8 +1,8 @@
-import { Link as RouterLink } from 'react-router-dom';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Link from '@mui/material/Link';
-import Typography from '@mui/material/Typography';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { Link as RouterLink } from "react-router-dom";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
+import Link from "@mui/material/Link";
+import Typography from "@mui/material/Typography";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 
 export interface BreadcrumbItem {
   label: string;
@@ -25,7 +25,7 @@ export const Breadcrumb = ({ items }: BreadcrumbProps) => {
         to="/"
         underline="hover"
         color="inherit"
-        sx={{ display: 'flex', alignItems: 'center' }}
+        sx={{ display: "flex", alignItems: "center" }}
       >
         Home
       </Link>

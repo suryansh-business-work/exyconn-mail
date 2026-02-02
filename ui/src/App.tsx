@@ -1,24 +1,24 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import Dashboard from './pages/Dashboard';
-import Compose from './pages/Compose';
-import Inbox from './pages/Inbox';
-import { Domains } from './pages/Domains';
-import { Mailboxes } from './pages/Mailboxes';
-import { VersionFooter } from './components/VersionFooter';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import Dashboard from "./pages/Dashboard";
+import Compose from "./pages/Compose";
+import Inbox from "./pages/Inbox";
+import { Domains } from "./pages/Domains";
+import { Mailboxes } from "./pages/Mailboxes";
+import { VersionFooter } from "./components/VersionFooter";
 
 const theme = createTheme({
   palette: {
-    mode: 'light',
+    mode: "light",
     primary: {
-      main: '#3b82f6',
+      main: "#3b82f6",
     },
     secondary: {
-      main: '#22c55e',
+      main: "#22c55e",
     },
     background: {
-      default: '#f5f5f5',
+      default: "#f5f5f5",
     },
   },
   typography: {
@@ -28,7 +28,7 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          textTransform: 'none',
+          textTransform: "none",
         },
       },
     },

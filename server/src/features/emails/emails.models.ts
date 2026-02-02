@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema, Types } from 'mongoose';
+import mongoose, { Document, Schema, Types } from "mongoose";
 
 export interface IEmailAttachment {
   fileName: string;
@@ -22,7 +22,7 @@ export interface IEmail extends Document {
   attachments: IEmailAttachment[];
   isRead: boolean;
   isStarred: boolean;
-  folder: 'inbox' | 'sent' | 'drafts' | 'trash' | 'spam';
+  folder: "inbox" | "sent" | "drafts" | "trash" | "spam";
   size: number;
   receivedAt: Date;
   createdAt: Date;
@@ -37,14 +37,14 @@ const emailAttachmentSchema = new Schema<IEmailAttachment>(
     url: { type: String, required: true },
     fileId: { type: String, required: true },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const emailSchema = new Schema<IEmail>(
   {
     mailboxId: {
       type: Schema.Types.ObjectId,
-      ref: 'Mailbox',
+      ref: "Mailbox",
       required: true,
     },
     messageId: {
@@ -63,19 +63,19 @@ const emailSchema = new Schema<IEmail>(
     replyTo: {
       type: String,
       trim: true,
-      default: '',
+      default: "",
     },
     subject: {
       type: String,
-      default: '(No Subject)',
+      default: "(No Subject)",
     },
     textBody: {
       type: String,
-      default: '',
+      default: "",
     },
     htmlBody: {
       type: String,
-      default: '',
+      default: "",
     },
     attachments: [emailAttachmentSchema],
     isRead: {
@@ -88,8 +88,8 @@ const emailSchema = new Schema<IEmail>(
     },
     folder: {
       type: String,
-      enum: ['inbox', 'sent', 'drafts', 'trash', 'spam'],
-      default: 'inbox',
+      enum: ["inbox", "sent", "drafts", "trash", "spam"],
+      default: "inbox",
     },
     size: {
       type: Number,
@@ -102,10 +102,10 @@ const emailSchema = new Schema<IEmail>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 emailSchema.index({ mailboxId: 1, folder: 1, receivedAt: -1 });
-emailSchema.index({ from: 'text', subject: 'text', textBody: 'text' });
+emailSchema.index({ from: "text", subject: "text", textBody: "text" });
 
-export const Email = mongoose.model<IEmail>('Email', emailSchema);
+export const Email = mongoose.model<IEmail>("Email", emailSchema);

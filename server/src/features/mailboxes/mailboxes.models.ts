@@ -1,5 +1,5 @@
-import mongoose, { Document, Schema, Types } from 'mongoose';
-import crypto from 'crypto';
+import mongoose, { Document, Schema, Types } from "mongoose";
+import crypto from "crypto";
 
 export interface IMailbox extends Document {
   domainId: Types.ObjectId;
@@ -20,7 +20,7 @@ const mailboxSchema = new Schema<IMailbox>(
   {
     domainId: {
       type: Schema.Types.ObjectId,
-      ref: 'Domain',
+      ref: "Domain",
       required: true,
     },
     email: {
@@ -43,7 +43,7 @@ const mailboxSchema = new Schema<IMailbox>(
     displayName: {
       type: String,
       trim: true,
-      default: '',
+      default: "",
     },
     quota: {
       type: Number,
@@ -64,17 +64,19 @@ const mailboxSchema = new Schema<IMailbox>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 // Index for faster lookups
 mailboxSchema.index({ domainId: 1, username: 1 }, { unique: true });
 
 // Hash password before saving
-mailboxSchema.pre('save', function (next) {
-  if (this.isModified('passwordHash') && !this.passwordHash.startsWith('$')) {
-    const salt = crypto.randomBytes(16).toString('hex');
-    const hash = crypto.pbkdf2Sync(this.passwordHash, salt, 10000, 64, 'sha512').toString('hex');
+mailboxSchema.pre("save", function (next) {
+  if (this.isModified("passwordHash") && !this.passwordHash.startsWith("$")) {
+    const salt = crypto.randomBytes(16).toString("hex");
+    const hash = crypto
+      .pbkdf2Sync(this.passwordHash, salt, 10000, 64, "sha512")
+      .toString("hex");
     this.passwordHash = `$pbkdf2$${salt}$${hash}`;
   }
   next();
@@ -82,12 +84,14 @@ mailboxSchema.pre('save', function (next) {
 
 // Validate password method
 mailboxSchema.methods.validatePassword = function (password: string): boolean {
-  const parts = this.passwordHash.split('$');
+  const parts = this.passwordHash.split("$");
   if (parts.length !== 4) return false;
   const salt = parts[2];
   const storedHash = parts[3];
-  const hash = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex');
+  const hash = crypto
+    .pbkdf2Sync(password, salt, 10000, 64, "sha512")
+    .toString("hex");
   return hash === storedHash;
 };
 
-export const Mailbox = mongoose.model<IMailbox>('Mailbox', mailboxSchema);
+export const Mailbox = mongoose.model<IMailbox>("Mailbox", mailboxSchema);
