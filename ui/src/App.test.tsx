@@ -5,19 +5,34 @@ import App from "./App";
 // Mock all API services to prevent network calls
 vi.mock("./services/domainService", () => ({
   domainService: {
-    getAll: vi.fn(() => Promise.resolve({ data: [], pagination: { total: 0, page: 1, limit: 10, totalPages: 0 } })),
+    getAll: vi.fn(() =>
+      Promise.resolve({
+        data: [],
+        pagination: { total: 0, page: 1, limit: 10, totalPages: 0 },
+      }),
+    ),
   },
 }));
 
 vi.mock("./services/mailboxService", () => ({
   mailboxService: {
-    getAll: vi.fn(() => Promise.resolve({ data: [], pagination: { total: 0, page: 1, limit: 10, totalPages: 0 } })),
+    getAll: vi.fn(() =>
+      Promise.resolve({
+        data: [],
+        pagination: { total: 0, page: 1, limit: 10, totalPages: 0 },
+      }),
+    ),
   },
 }));
 
 vi.mock("./services/emailService", () => ({
   emailService: {
-    getAll: vi.fn(() => Promise.resolve({ data: [], pagination: { total: 0, page: 1, limit: 10, totalPages: 0 } })),
+    getAll: vi.fn(() =>
+      Promise.resolve({
+        data: [],
+        pagination: { total: 0, page: 1, limit: 10, totalPages: 0 },
+      }),
+    ),
   },
 }));
 

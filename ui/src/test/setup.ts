@@ -4,10 +4,20 @@ import { vi, beforeAll, afterAll } from "vitest";
 // Mock API calls to prevent network errors in tests
 vi.mock("./services/api", () => ({
   default: {
-    get: vi.fn(() => Promise.resolve({ data: { success: true, data: [], pagination: { total: 0, page: 1, limit: 10, totalPages: 0 } } })),
+    get: vi.fn(() =>
+      Promise.resolve({
+        data: {
+          success: true,
+          data: [],
+          pagination: { total: 0, page: 1, limit: 10, totalPages: 0 },
+        },
+      }),
+    ),
     post: vi.fn(() => Promise.resolve({ data: { success: true, data: {} } })),
     put: vi.fn(() => Promise.resolve({ data: { success: true, data: {} } })),
-    delete: vi.fn(() => Promise.resolve({ data: { success: true, message: "Deleted" } })),
+    delete: vi.fn(() =>
+      Promise.resolve({ data: { success: true, message: "Deleted" } }),
+    ),
   },
 }));
 
@@ -30,4 +40,3 @@ beforeAll(() => {
 afterAll(() => {
   console.error = originalError;
 });
-
