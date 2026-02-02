@@ -1,0 +1,37 @@
+{
+  "name": "exyconn-mail",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Exyconn Mail - Email service and management application",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:ui\" \"npm run dev:server\"",
+    "dev:ui": "cd ui && npm run dev",
+    "dev:server": "cd server && npm run dev",
+    "build": "npm run build:ui && npm run build:server",
+    "build:ui": "cd ui && npm run build",
+    "build:server": "cd server && npm run build",
+    "typecheck": "npm run typecheck:ui && npm run typecheck:server",
+    "typecheck:ui": "cd ui && npm run typecheck",
+    "typecheck:server": "cd server && npm run typecheck",
+    "lint": "npm run lint:ui && npm run lint:server",
+    "lint:ui": "cd ui && npm run lint",
+    "lint:server": "cd server && npm run lint",
+    "format": "npm run format:ui && npm run format:server",
+    "format:ui": "cd ui && npm run format",
+    "format:server": "cd server && npm run format",
+    "format:check": "npm run format:check:ui && npm run format:check:server",
+    "format:check:ui": "cd ui && npm run format:check",
+    "format:check:server": "cd server && npm run format:check",
+    "validate": "npm run typecheck && npm run lint && npm run format:check && npm run build",
+    "prepare": "husky",
+    "install:all": "npm install && cd ui && npm install && cd ../server && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "husky": "^9.1.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/suryansh-business-work/exyconn-mail.git"
+  }
+}

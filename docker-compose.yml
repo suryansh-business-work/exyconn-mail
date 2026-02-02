@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  exyconn-mail-ui:
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+    container_name: exyconn-mail-ui
+    ports:
+      - "4031:4031"
+    volumes:
+      - ./ui:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - VITE_API_URL=http://localhost:4032
+    command: npm run dev
+    depends_on:
+      - exyconn-mail-server
+
+  exyconn-mail-server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: exyconn-mail-server
+    ports:
+      - "4032:4032"
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - PORT=4032
+    command: npm run dev

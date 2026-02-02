@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Run validation before push
+echo "🔍 Running pre-push validation..."
+
+npm run validate
+
+if [ $? -ne 0 ]; then
+  echo "❌ Pre-push validation failed! Please fix the issues before pushing."
+  exit 1
+fi
+
+echo "✅ Pre-push validation passed!"
