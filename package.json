@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "description": "Exyconn Mail - Email service and management application",
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "scripts": {
     "dev": "concurrently \"npm run dev:ui\" \"npm run dev:server\"",
     "dev:ui": "cd ui && npm run dev",
@@ -22,7 +25,10 @@
     "format:check": "npm run format:check:ui && npm run format:check:server",
     "format:check:ui": "cd ui && npm run format:check",
     "format:check:server": "cd server && npm run format:check",
-    "validate": "npm run typecheck && npm run lint && npm run format:check && npm run build",
+    "test": "npm run test:ui && npm run test:server",
+    "test:ui": "cd ui && npm run test",
+    "test:server": "cd server && npm run test",
+    "validate": "npm run typecheck && npm run lint && npm run format:check && npm run test && npm run build",
     "prepare": "husky",
     "install:all": "npm install && cd ui && npm install && cd ../server && npm install"
   },
