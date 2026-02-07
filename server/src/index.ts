@@ -1,7 +1,7 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import { mailRouter } from './routes/mail';
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import { mailRouter } from "./routes/mail";
 
 dotenv.config();
 
@@ -13,11 +13,11 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api/mail', mailRouter);
+app.use("/api/mail", mailRouter);
 
 // Health check
-app.get('/health', (_req, res) => {
-  res.json({ status: 'ok', service: 'exyconn-mail-server' });
+app.get("/health", (_req, res) => {
+  res.json({ status: "ok", service: "exyconn-mail-server" });
 });
 
 // Start server

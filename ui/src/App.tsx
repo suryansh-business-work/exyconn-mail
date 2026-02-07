@@ -1,8 +1,8 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Dashboard from './pages/Dashboard';
-import Compose from './pages/Compose';
-import Inbox from './pages/Inbox';
-import { VersionFooter } from './components/VersionFooter';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Dashboard from "./pages/Dashboard";
+import Compose from "./pages/Compose";
+import Inbox from "./pages/Inbox";
+import { VersionFooter } from "./components/VersionFooter";
 
 function App() {
   return (
