@@ -25,6 +25,9 @@ import { getDashboardStats } from './services/dashboard.service';
 
 const app = express();
 
+// Trust proxy (behind nginx)
+app.set('trust proxy', 1);
+
 // Security & parsing middleware
 app.use(helmet());
 app.use(cors({ origin: config.corsOrigins, credentials: true }));

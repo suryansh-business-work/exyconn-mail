@@ -36,7 +36,7 @@ const router = Router();
  *     responses:
  *       201: { description: Mailbox created }
  */
-router.post('/', authenticate, authorize('admin', 'domain-owner'), createMailbox);
+router.post('/', authenticate, createMailbox);
 
 /**
  * @swagger
@@ -82,7 +82,7 @@ router.get('/:id', authenticate, getMailboxById);
  *     summary: Update a mailbox
  *     security: [{ bearerAuth: [] }]
  */
-router.patch('/:id', authenticate, authorize('admin', 'domain-owner'), updateMailbox);
+router.patch('/:id', authenticate, updateMailbox);
 
 /**
  * @swagger
@@ -92,7 +92,7 @@ router.patch('/:id', authenticate, authorize('admin', 'domain-owner'), updateMai
  *     summary: Suspend a mailbox
  *     security: [{ bearerAuth: [] }]
  */
-router.post('/:id/suspend', authenticate, authorize('admin', 'domain-owner'), suspendMailbox);
+router.post('/:id/suspend', authenticate, suspendMailbox);
 
 /**
  * @swagger
@@ -102,7 +102,7 @@ router.post('/:id/suspend', authenticate, authorize('admin', 'domain-owner'), su
  *     summary: Activate a mailbox
  *     security: [{ bearerAuth: [] }]
  */
-router.post('/:id/activate', authenticate, authorize('admin', 'domain-owner'), activateMailbox);
+router.post('/:id/activate', authenticate, activateMailbox);
 
 /**
  * @swagger
@@ -122,11 +122,6 @@ router.delete('/:id', authenticate, authorize('admin'), deleteMailbox);
  *     summary: Change mailbox password
  *     security: [{ bearerAuth: [] }]
  */
-router.patch(
-  '/:id/password',
-  authenticate,
-  authorize('admin', 'domain-owner'),
-  changeMailboxPassword,
-);
+router.patch('/:id/password', authenticate, changeMailboxPassword);
 
 export default router;

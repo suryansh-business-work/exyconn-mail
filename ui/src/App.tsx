@@ -36,7 +36,7 @@ function App() {
               <Route
                 path="/domains"
                 element={
-                  <ProtectedRoute roles={['admin', 'domain-owner']}>
+                  <ProtectedRoute>
                     <AppLayout>
                       <DomainsPage />
                     </AppLayout>
@@ -46,7 +46,7 @@ function App() {
               <Route
                 path="/mailboxes"
                 element={
-                  <ProtectedRoute roles={['admin', 'domain-owner']}>
+                  <ProtectedRoute>
                     <AppLayout>
                       <MailboxesPage />
                     </AppLayout>

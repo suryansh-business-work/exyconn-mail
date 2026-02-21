@@ -4,5 +4,6 @@ dist
 .env.local
 .env.*.local
 npm-debug.log*
+package-lock.json
 .git
 .gitignore

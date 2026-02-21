@@ -31,7 +31,7 @@ const router = Router();
  *     responses:
  *       201: { description: Domain created }
  */
-router.post('/', authenticate, authorize('admin', 'domain-owner'), createDomain);
+router.post('/', authenticate, createDomain);
 
 /**
  * @swagger
@@ -80,7 +80,7 @@ router.get('/:id', authenticate, getDomainById);
  *     summary: Update a domain
  *     security: [{ bearerAuth: [] }]
  */
-router.patch('/:id', authenticate, authorize('admin', 'domain-owner'), updateDomain);
+router.patch('/:id', authenticate, updateDomain);
 
 /**
  * @swagger
