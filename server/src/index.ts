@@ -14,7 +14,7 @@ import {
   authLimiter,
   webhookLimiter,
 } from './middlewares/index';
-import { authenticate, authorize } from './middlewares/auth.middleware';
+import { authenticate } from './middlewares/auth.middleware';
 
 // Module routes
 import authRoutes from './modules/auth/auth.routes';
@@ -51,12 +51,7 @@ app.use('/api/mailboxes', mailboxRoutes);
 app.use('/api/mail', mailRoutes);
 
 // Dashboard stats
-app.get(
-  '/api/dashboard/stats',
-  authenticate,
-  authorize('admin', 'domain-owner'),
-  getDashboardStats,
-);
+app.get('/api/dashboard/stats', authenticate, getDashboardStats);
 
 // Health check
 app.get('/health', (_req, res) => {
