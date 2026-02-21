@@ -1,22 +1,14 @@
 version: '3.8'
 
 services:
-  exyconn-mail-ui:
-    build:
-      context: ./ui
-      dockerfile: Dockerfile
-    container_name: exyconn-mail-ui
+  mongo:
+    image: mongo:7
+    container_name: exyconn-mail-mongo
     ports:
-      - "4031:4031"
+      - "27017:27017"
     volumes:
-      - ./ui:/app
-      - /app/node_modules
-    environment:
-      - NODE_ENV=development
-      - VITE_API_URL=http://localhost:4032
-    command: npm run dev
-    depends_on:
-      - exyconn-mail-server
+      - mongo-data:/data/db
+    restart: unless-stopped
 
   exyconn-mail-server:
     build:
@@ -25,10 +17,29 @@ services:
     container_name: exyconn-mail-server
     ports:
       - "4032:4032"
-    volumes:
-      - ./server:/app
-      - /app/node_modules
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
       - PORT=4032
-    command: npm run dev
+      - MONGO_URI=mongodb://mongo:27017/exyconn-mail
+      - JWT_SECRET=${JWT_SECRET:-dev-jwt-secret-change-in-production}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET:-dev-refresh-secret-change-in-production}
+      - CORS_ORIGINS=http://localhost:4031
+      - MAIL_SERVER_HOSTNAME=mail.exyconn.com
+    depends_on:
+      - mongo
+    restart: unless-stopped
+
+  exyconn-mail-ui:
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+    container_name: exyconn-mail-ui
+    ports:
+      - "4031:80"
+    depends_on:
+      - exyconn-mail-server
+    restart: unless-stopped
+
+volumes:
+  mongo-data:
+
